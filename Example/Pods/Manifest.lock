@@ -1,0 +1,26 @@
+PODS:
+  - Kingfisher (4.6.3)
+  - NVActivityIndicatorView (4.1.1):
+    - NVActivityIndicatorView/Presenter (= 4.1.1)
+  - NVActivityIndicatorView/Presenter (4.1.1)
+  - Stickers (0.1.0):
+    - Kingfisher (~> 4.6.3)
+    - NVActivityIndicatorView (~> 4.1.1)
+
+DEPENDENCIES:
+  - Kingfisher (~> 4.6.3)
+  - NVActivityIndicatorView (~> 4.1.1)
+  - Stickers (from `../`)
+
+EXTERNAL SOURCES:
+  Stickers:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Kingfisher: 98e6d5b5e807645743e8ed5ececd25d688d38452
+  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
+  Stickers: b93ddc97866e168bfddb9aab79cfd7a3e5ba89ae
+
+PODFILE CHECKSUM: 0e1e3e682380dcf8056f72a0b06a6fac64034427
+
+COCOAPODS: 1.2.1

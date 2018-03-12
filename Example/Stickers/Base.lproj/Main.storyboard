@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Stickers_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bQa-Tc-bYp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mzo-7l-C2j" customClass="DraggableContainerView" customModule="Stickers">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cp6-D2-7cj">
+                                <rect key="frame" x="16" y="20" width="85" height="30"/>
+                                <state key="normal" title="Add stickers"/>
+                                <connections>
+                                    <action selector="addSticker:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="uUl-Gm-i9A"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lvn-p7-iuk">
+                                <rect key="frame" x="252" y="30" width="113" height="30"/>
+                                <state key="normal" title="Take screenshot"/>
+                                <connections>
+                                    <action selector="takeScreenshot:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="eod-K6-tfo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="WDB-Zo-fkc" firstAttribute="bottom" secondItem="Mzo-7l-C2j" secondAttribute="bottom" id="4XG-4V-N17"/>
+                            <constraint firstItem="WDB-Zo-fkc" firstAttribute="trailing" secondItem="Mzo-7l-C2j" secondAttribute="trailing" id="5dw-sh-Xcg"/>
+                            <constraint firstItem="WDB-Zo-fkc" firstAttribute="trailing" secondItem="lvn-p7-iuk" secondAttribute="trailing" constant="10" id="Cty-aL-OUL"/>
+                            <constraint firstItem="lvn-p7-iuk" firstAttribute="top" secondItem="WDB-Zo-fkc" secondAttribute="top" constant="10" id="FN6-FJ-g7D"/>
+                            <constraint firstItem="cp6-D2-7cj" firstAttribute="top" secondItem="WDB-Zo-fkc" secondAttribute="top" id="GHc-X3-56c"/>
+                            <constraint firstItem="cp6-D2-7cj" firstAttribute="leading" secondItem="WDB-Zo-fkc" secondAttribute="leading" constant="16" id="Lky-IH-704"/>
+                            <constraint firstItem="Mzo-7l-C2j" firstAttribute="top" secondItem="WDB-Zo-fkc" secondAttribute="top" id="cE5-zF-9Wy"/>
+                            <constraint firstItem="Mzo-7l-C2j" firstAttribute="leading" secondItem="WDB-Zo-fkc" secondAttribute="leading" id="roH-bo-pU9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WDB-Zo-fkc"/>
+                    </view>
+                    <connections>
+                        <outlet property="draggableContainerView" destination="Mzo-7l-C2j" id="zFt-ut-qyE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>

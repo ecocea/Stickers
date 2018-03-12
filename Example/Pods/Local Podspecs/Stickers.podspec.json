@@ -1,0 +1,36 @@
+{
+  "name": "Stickers",
+  "version": "0.1.0",
+  "summary": "A short description of Stickers.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/accor-ecocea/Stickers",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "accor-ecocea": "asuard@ecocea.com"
+  },
+  "source": {
+    "git": "https://github.com/accor-ecocea/Stickers.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source_files": "Stickers/Classes/**/*",
+  "resources": "Stickers/*.{storyboard,xib,xcassets,json,imageset,png}",
+  "resource_bundles": {
+    "Stickers": [
+      "Stickers/*.{storyboard,xib,xcassets,json,imageset,png}"
+    ]
+  },
+  "dependencies": {
+    "Kingfisher": [
+      "~> 4.6.3"
+    ],
+    "NVActivityIndicatorView": [
+      "~> 4.1.1"
+    ]
+  }
+}
