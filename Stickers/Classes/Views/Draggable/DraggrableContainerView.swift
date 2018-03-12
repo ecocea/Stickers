@@ -47,7 +47,7 @@ open class DraggableContainerView: UIView {
     }
     
     //MARK: Configure collection
-    public func configureCollection(with images: [UIImage]) {
+    public func configureCollectionWithImages(_ images: [UIImage]) {
         self.stickerSources = images.map { Constants.StickerSource.image($0) }
         stickerContainer = StickersContainerView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
         stickerContainer?.datasource = self
@@ -55,7 +55,7 @@ open class DraggableContainerView: UIView {
         self.addSubview(stickerContainer!)
     }
     
-    public func configureCollection(with urls: [URL]) {
+    public func configureCollectionWithUrls(_ urls: [URL]) {
         self.stickerSources = urls.map { Constants.StickerSource.url($0) }
         stickerContainer = StickersContainerView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
         stickerContainer?.datasource = self
@@ -64,9 +64,9 @@ open class DraggableContainerView: UIView {
         
     }
     
-    public func configureCollection(stringUrls: [String]) {
+    public func configureCollection(with stringUrls: [String]) {
         let urls = stringUrls.flatMap { URL(string: $0) }
-        configureCollection(with: urls)
+        configureCollectionWithUrls(urls)
     }
     
     public func displayCollection() {
