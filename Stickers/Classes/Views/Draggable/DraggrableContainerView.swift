@@ -64,7 +64,7 @@ open class DraggableContainerView: UIView {
         
     }
     
-    public func configureCollection(with stringUrls: [String]) {
+    public func configureCollection(stringUrls: [String]) {
         let urls = stringUrls.flatMap { URL(string: $0) }
         configureCollection(with: urls)
     }
