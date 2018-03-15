@@ -95,8 +95,13 @@ class StickersContainerView: UIView{
         case .ended:
             let section = Constants.Section.chooseSection(fromVelocity: velocity.y, andHeight: y + translation.y)
             UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 5, options: [.curveEaseOut, .allowUserInteraction], animations: {
-                self.frame = CGRect(x: 0, y: self.screenHeight - section.rawValue, width: self.frame.width, height: self.frame.height)
-                self.collectionHeightConstraint.constant = section.rawValue - 70
+                self.frame.origin.y = self.screenHeight - section.rawValue
+                if section == .low {
+                    self.collectionHeightConstraint.constant = Constants.Section.mid.rawValue - 70
+                } else {
+                    self.collectionHeightConstraint.constant = section.rawValue - 70
+                }
+                
             })
             
         default:

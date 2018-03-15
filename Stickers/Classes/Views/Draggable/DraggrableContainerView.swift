@@ -50,6 +50,19 @@ open class DraggableContainerView: UIView {
         
     }
     
+    
+    func maxRect(from view: UIView) -> CGRect {
+        var rect = view.frame
+        for case let sticker as DraggableImageView in subviews {
+            if rect.intersects(sticker.frame) {
+                rect = rect.union(sticker.frame)
+            }
+        }
+       
+        return rect
+        
+    }
+    
     //MARK: Configure collection
     public func configureCollectionWithImages(_ images: [UIImage]) {
         self.stickerSources = images.map { Constants.StickerSource.image($0) }
@@ -112,18 +125,24 @@ open class DraggableContainerView: UIView {
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch: UITouch? = touches.first
         if let view = touch?.view, let stickerView = self.stickerContainer, !view.isIn(stickerView) {
-            UIView.animate(withDuration: 0.3) { self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height }
+            UIView.animate(withDuration: 0.3) {
+                self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+                self.stickerContainer?.collectionHeightConstraint.constant = Constants.Section.mid.rawValue - 70
+            }
         }
         
     }
     
     //MARK: Screenshot
-    public func takeScreenshotAndSaveItToLibrary() {
-        UIGraphicsBeginImageContextWithOptions(self.frame.size, true, 0.0)
-        self.layer.render(in: UIGraphicsGetCurrentContext()!)
+    public func takeScreenshotAndSaveItToLibrary(imageView: UIView) {
+        let rect = maxRect(from: imageView)
+        UIGraphicsBeginImageContextWithOptions(rect.size, true, 0.0)
+        drawHierarchy(in: CGRect.init(x: 0, y: -rect.origin.y, width: bounds.width, height: bounds.height), afterScreenUpdates: true)
         let image = UIGraphicsGetImageFromCurrentImageContext()
+        
         UIGraphicsEndImageContext()
         UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
+       
     }
     
     public func takeScreenshot() -> UIImage? {

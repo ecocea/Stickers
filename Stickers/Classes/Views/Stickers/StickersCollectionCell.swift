@@ -10,4 +10,9 @@ import UIKit
 
 class StickersCollectionCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.alpha = 1
+    }
 }
