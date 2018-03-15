@@ -51,7 +51,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func takeScreenshot(_ sender: Any) {
-        draggableContainerView.takeScreenshotAndSaveItToLibrary(imageView: imageView)
+        
     }
 
 }

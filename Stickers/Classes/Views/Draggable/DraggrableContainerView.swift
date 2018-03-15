@@ -51,16 +51,14 @@ open class DraggableContainerView: UIView {
     }
     
     
-    func maxRect(from view: UIView) -> CGRect {
-        var rect = view.frame
+    func maxRect(from rect: CGRect) -> CGRect {
+        var newRect = rect
         for case let sticker as DraggableImageView in subviews {
-            if rect.intersects(sticker.frame) {
-                rect = rect.union(sticker.frame)
+            if newRect.intersects(sticker.bounds) {
+                newRect = newRect.union(sticker.frame)
             }
         }
-       
-        return rect
-        
+        return newRect
     }
     
     //MARK: Configure collection
@@ -134,23 +132,58 @@ open class DraggableContainerView: UIView {
     }
     
     //MARK: Screenshot
-    public func takeScreenshotAndSaveItToLibrary(imageView: UIView) {
-        let rect = maxRect(from: imageView)
+    public func takeScreenshotAndSaveItToLibrary(imageView: UIImageView) {
+        let rect = calculateRectOfImage(from: imageView)
+        if let image = imageContext(from: rect) {
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        }
+        
+    }
+    
+    public func takeScreenshot(imageView: UIImageView) -> UIImage? {
+        let rect = calculateRectOfImage(from: imageView)
+        return imageContext(from: rect)
+    }
+    
+    
+    func imageContext(from rect: CGRect) -> UIImage? {
+        
         UIGraphicsBeginImageContextWithOptions(rect.size, true, 0.0)
         drawHierarchy(in: CGRect.init(x: 0, y: -rect.origin.y, width: bounds.width, height: bounds.height), afterScreenUpdates: true)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
-        UIImageWriteToSavedPhotosAlbum(image!, nil, nil, nil)
-       
+        return image
     }
     
-    public func takeScreenshot() -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(self.frame.size, true, 0.0)
-        self.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
+    func calculateRectOfImage(from imageView: UIImageView) -> CGRect {
+        if imageView.contentMode == .scaleAspectFill {
+            return imageView.frame
+        } else {
+            let imageViewSize = imageView.frame.size
+            let imgSize = imageView.image?.size
+            
+            guard let imageSize = imgSize, imgSize != nil else {
+                return CGRect.zero
+            }
+            
+            let scaleWidth = imageViewSize.width / imageSize.width
+            let scaleHeight = imageViewSize.height / imageSize.height
+            let aspect = fmin(scaleWidth, scaleHeight)
+            
+            var imageRect = CGRect(x: 0, y: 0, width: imageSize.width * aspect, height: imageSize.height * aspect)
+            // Center image
+            imageRect.origin.x = (imageViewSize.width - imageRect.size.width) / 2
+            imageRect.origin.y = (imageViewSize.height - imageRect.size.height) / 2
+            
+            // Add imageView offset
+            imageRect.origin.x += imageView.frame.origin.x
+            imageRect.origin.y += imageView.frame.origin.y
+            //Get imageRect with stickers
+            imageRect = maxRect(from: imageRect)
+            return imageRect
+        }
+        
     }
     
 }
