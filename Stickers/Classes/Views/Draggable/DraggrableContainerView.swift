@@ -13,6 +13,7 @@ open class DraggableContainerView: UIView {
     var stickerSources = [Constants.StickerSource]()
     var stickerContainer: StickersContainerView?
     var binView = UIImageView(image: UIImage(named: "binIcon", in:  Bundle(for:DraggableContainerView.self) , compatibleWith: nil))
+
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,14 +36,15 @@ open class DraggableContainerView: UIView {
     }
     
     func setupBinView() {
+        binView.tintColor = .white
         
         binView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(binView)
         binView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         binView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -40).isActive = true
-        binView.widthAnchor.constraint(equalToConstant: 50)
-        binView.heightAnchor.constraint(equalToConstant: 50)
-        binView.isHidden = true
+        binView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        binView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        binView.isHidden = false
         
     }
     
@@ -155,11 +157,11 @@ extension DraggableContainerView: StickersDatasource {
 }
 
 extension DraggableContainerView: DraggableItemDelegate {
-    func isMoving() {
+    open func isMoving() {
         binView.isHidden = false
         self.bringSubview(toFront: binView)
     }
-    func isStopping() {
+    open func isStopping() {
         binView.isHidden = true
     }
 }

@@ -90,9 +90,9 @@ class DraggableImageView: UIImageView {
         }
         
         UIView.animate(withDuration: 0.2, animations: {
-            self.frame.size.width = 50
-            self.frame.size.height = 50
-            self.frame.origin = binZone.origin
+            self.frame.size.width = 30
+            self.frame.size.height = 30
+            self.center = self.binCenter!
         })
     }
     
