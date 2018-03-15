@@ -46,7 +46,7 @@ open class DraggableContainerView: UIView {
         binView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -40).isActive = true
         binView.widthAnchor.constraint(equalToConstant: 30).isActive = true
         binView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        binView.isHidden = false
+        binView.isHidden = true
         
     }
     
