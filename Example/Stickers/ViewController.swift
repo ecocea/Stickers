@@ -27,6 +27,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         draggableContainerView.configureCollection(with: urls)
+        draggableContainerView.delegate = self
     }
     
     @IBAction func addSticker(_ sender: Any) {
@@ -37,5 +38,15 @@ class ViewController: UIViewController {
         draggableContainerView.takeScreenshotAndSaveItToLibrary()
     }
 
+}
+
+extension ViewController: DraggableItemDelegate {
+    func isMoving() {
+        draggableContainerView.isMoving()
+    }
+    
+    func isStopping() {
+        draggableContainerView.isStopping()
+    }
 }
 

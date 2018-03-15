@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 
-protocol DraggableItemDelegate {
+public protocol DraggableItemDelegate {
     func isMoving() -> Void
     func isStopping() -> Void
 }

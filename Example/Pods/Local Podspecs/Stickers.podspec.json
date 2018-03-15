@@ -1,19 +1,19 @@
 {
   "name": "Stickers",
-  "version": "0.1.0",
-  "summary": "A short description of Stickers.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/accor-ecocea/Stickers",
+  "version": "0.1.2",
+  "summary": "Swift pod to add stickers on your images!",
+  "description": "Swift pod to add stickers on your images ! Setup with urls or images.",
+  "homepage": "https://github.com/ecocea/Stickers",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "accor-ecocea": "asuard@ecocea.com"
+    "ecocea": "asuard@ecocea.com"
   },
   "source": {
-    "git": "https://github.com/accor-ecocea/Stickers.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/ecocea/Stickers.git",
+    "tag": "0.1.2"
   },
   "platforms": {
     "ios": "10.0"

@@ -14,6 +14,7 @@ open class DraggableContainerView: UIView {
     var stickerContainer: StickersContainerView?
     var binView = UIImageView(image: UIImage(named: "binIcon", in:  Bundle(for:DraggableContainerView.self) , compatibleWith: nil))
 
+    open var delegate: DraggableItemDelegate?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,6 +33,7 @@ open class DraggableContainerView: UIView {
         let rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation(recognizer:)))
         self.addGestureRecognizer(rotateGesture)
         setupBinView()
+        self.delegate = self
         
     }
     
@@ -147,7 +149,7 @@ extension DraggableContainerView: StickersDatasource {
         let image = DraggableImageView(image: image)
         
         image.setup(with: self)
-        image.delegate = self
+        image.delegate = self.delegate
         image.binZone = binView.frame
         UIView.animate(withDuration: 0.3) {
             self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
