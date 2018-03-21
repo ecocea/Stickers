@@ -54,8 +54,9 @@ open class DraggableContainerView: UIView {
     func maxRect(from rect: CGRect) -> CGRect {
         var newRect = rect
         for case let sticker as DraggableImageView in subviews {
-            if newRect.intersects(sticker.bounds) {
-                newRect = newRect.union(sticker.frame)
+            let stickerRectInView = sticker.frame.intersection(self.frame)
+            if newRect.intersects(stickerRectInView) {
+                newRect = newRect.union(stickerRectInView)
             }
         }
         return newRect
