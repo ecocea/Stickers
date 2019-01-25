@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 
 protocol StickersDatasource {
     var stickerImages: [Constants.StickerSource] { get }
-    func add(image: UIImage) -> Void
+    func add(image: UIImage, url: URL?) -> Void
 }
 
 class StickersContainerView: UIView{
@@ -24,6 +24,8 @@ class StickersContainerView: UIView{
     let screenHeight = UIScreen.main.bounds.height
     var datasource: StickersDatasource?
     var images = [UIImage]()
+    var isGifArray = [Bool]()
+    var urls = [URL]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -70,6 +72,11 @@ class StickersContainerView: UIView{
                 KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { (image, error, _, _) in
                     if let img = image {
                         self.images.append(img)
+                    }
+                    self.urls.append(url)
+                    let format = url.absoluteString.components(separatedBy: ".")
+                    if let last = format.last  {
+                        self.isGifArray.append(last == "gif")
                     }
                     dispatchGroup.leave()
                     
@@ -119,13 +126,19 @@ extension StickersContainerView: UICollectionViewDataSource, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "stickersCell", for: indexPath as IndexPath) as! StickersCollectionCell
-        cell.imageView.image = images[indexPath.item]
+        cell.imageView.prepareForReuse()
+        if self.isGifArray.count > indexPath.item, self.isGifArray[indexPath.item] {
+            cell.fillCell(url: urls[indexPath.item], image: nil)
+        } else {
+            cell.fillCell(url: nil, image: images[indexPath.item])
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = images[indexPath.item]
-        datasource?.add(image: item)
+        let url = (urls.count > indexPath.item) ? urls[indexPath.item] : nil
+        datasource?.add(image: item, url: url)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

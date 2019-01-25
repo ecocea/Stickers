@@ -9,10 +9,19 @@ import Foundation
 import UIKit
 
 class StickersCollectionCell: UICollectionViewCell {
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: GIFImageView!
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.alpha = 1
+        self.imageView.prepareForReuse()
+    }
+    
+    func fillCell(url: URL?, image: UIImage?) {
+        if let url = url {
+            imageView.animate(withGIFURL: url)
+        } else if let image = image {
+            imageView.image = image
+        }
     }
 }

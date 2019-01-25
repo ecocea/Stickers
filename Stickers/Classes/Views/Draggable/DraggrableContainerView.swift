@@ -198,14 +198,16 @@ extension DraggableContainerView: StickersDatasource {
         }
     }
     
-    func add(image: UIImage) {
+    func add(image: UIImage, url: URL?) {
         let image = DraggableImageView(image: image)
-        
         image.setup(with: self)
         image.delegate = self.delegate
         image.binZone = binView.frame
         UIView.animate(withDuration: 0.3) {
             self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+        }
+        if let url = url {
+            image.animate(withGIFURL: url)
         }
     }
     

@@ -15,7 +15,7 @@ public protocol DraggableItemDelegate {
     func isStopping() -> Void
 }
 
-class DraggableImageView: UIImageView {
+class DraggableImageView: GIFImageView {
     
     var delegate: DraggableItemDelegate?
     var binZone: CGRect?
