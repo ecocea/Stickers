@@ -70,6 +70,8 @@ class ViewController: UIViewController {
                 self.timer.invalidate()
                 
             })
+        } else {
+            self.screenshot()
         }
     }
     
