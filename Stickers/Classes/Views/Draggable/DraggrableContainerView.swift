@@ -193,18 +193,22 @@ open class DraggableContainerView: UIView {
             var frameToFind = 0
             var frameArray = [Int]()
             var timeInterVal = 0.0
+            
+            //Find all the Gifs and select the one with the most frames
+            // timeInterval corresponds to the average of time between frames for all the gifs on the picture
             stickersImages.forEach { (image) in
                 if image.gifLoopDuration != 0.0 {
                     let duration = Double(round(10*image.gifLoopDuration)/10)
                     if image.frameCount > frameToFind {
                         frameToFind = image.frameCount
                     }
-                    durationArray.append( duration) // 2 digits precision for video length
+                    durationArray.append( duration) // 1 digit precision for video length
                     timeInterVal += (duration / Double(image.frameCount))
                     frameArray.append(image.frameCount)
                 }
             }
             if !frameArray.isEmpty {
+                // minFrame: number of frames min divisible by each gif frame count to constitute our new Gif image
                 timeInterVal = timeInterVal / Double(frameArray.count)
                 var minFrame = 0
                 let maxDuration = frameToFind
