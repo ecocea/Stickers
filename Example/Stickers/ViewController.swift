@@ -10,6 +10,7 @@ import UIKit
 import Stickers
 import ImageIO
 import MobileCoreServices
+import Photos
 
 class ViewController: UIViewController {
 
@@ -66,7 +67,8 @@ class ViewController: UIViewController {
             print(double)
             scheduledTimerWithTimeInterval(self.timeInterval)
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * timeInterval, execute: {
-                UIImage.animatedGif(from: self.images, timeBetweenFrames: self.timeInterval)
+                let url = UIImage.animatedGif(from: self.images, timeBetweenFrames: self.timeInterval)
+                UIImage.saveGif(url: url!)
                 self.timer.invalidate()
                 
             })
@@ -100,10 +102,24 @@ extension ViewController: DraggableItemDelegate {
 }
 
 extension UIImage {
-
-    static func animatedGif(from images: [UIImage], numberOfLoop: Int = 0, timeBetweenFrames: Double) {
-        let fileProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFLoopCount as String: 0]]  as CFDictionary
-        let frameProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [(kCGImagePropertyGIFDelayTime as String): timeBetweenFrames]] as CFDictionary
+    
+    static func saveGif(url: URL) {
+        PHPhotoLibrary.shared().performChanges({
+            let changeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: url)
+            changeRequest?.creationDate = Date()
+        }, completionHandler: { (success, error) in
+            if let error = error {
+                print(error)
+            }
+            print(success)
+            
+        })
+    }
+    
+    static func animatedGif(from images: [UIImage], numberOfLoop: Int = 0, timeBetweenFrames: Double) -> URL? {
+        let fileProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFLoopCount as String: 0, kCGImagePropertyGIFHasGlobalColorMap as String: false]]  as CFDictionary
+        //let colorProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFHasGlobalColorMap as String: false]] as CFDictionary
+        let frameProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [(kCGImagePropertyGIFDelayTime as String): 0.04]] as CFDictionary
         
         let documentsDirectoryURL: URL? = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         let fileURL: URL? = documentsDirectoryURL?.appendingPathComponent("animated.gif")
@@ -120,7 +136,9 @@ extension UIImage {
                     print("Failed to finalize the image destination")
                 }
                 print("Url = \(fileURL)")
+                return fileURL
             }
         }
+        return nil
     }
 }

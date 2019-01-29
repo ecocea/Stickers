@@ -187,6 +187,7 @@ open class DraggableContainerView: UIView {
         }
     }
     
+    // max values: 50 frames and 0.1s
     public func calculateMinimumLoopDuration() -> (frame: Int, time: Double)? {
         if !self.stickersImages.isEmpty {
             var durationArray = [Double]()
@@ -210,22 +211,25 @@ open class DraggableContainerView: UIView {
             if !frameArray.isEmpty {
                 // minFrame: number of frames min divisible by each gif frame count to constitute our new Gif image
                 timeInterVal = timeInterVal / Double(frameArray.count)
-                var minFrame = 0
+                if timeInterVal > 0.1 {
+                    timeInterVal = 0.1
+                }
+                var hasCommonFrame = false
                 let maxDuration = frameToFind
-                while minFrame == 0 {
-                    var isFound = true
+                while !hasCommonFrame && frameToFind <= 50 {
+                    hasCommonFrame = true
                     for frame in frameArray {
                         if frameToFind % frame != 0  {
-                            isFound = false
+                            hasCommonFrame = false
                             frameToFind += maxDuration
                             break
                         }
                     }
-                    if isFound {
-                        minFrame = frameToFind
-                    }
                 }
-                return (minFrame, timeInterVal)
+                if frameToFind > 50 {
+                    frameToFind = 50
+                }
+                return (frameToFind, timeInterVal)
             }
             return nil
         }
@@ -243,15 +247,15 @@ extension DraggableContainerView: StickersDatasource {
         }
     }
     
-    func add(image: UIImage, url: URL?) {
-        let image = DraggableImageView(image: image)
+    func add(sticker: Sticker) {
+        let image = DraggableImageView(image: sticker.image)
         image.setup(with: self)
         image.delegate = self.delegate
         image.binZone = binView.frame
         UIView.animate(withDuration: 0.3) {
             self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
         }
-        if let url = url {
+        if let url = sticker.url {
             image.animate(withGIFURL: url)
         }
         stickersImages.append(image)

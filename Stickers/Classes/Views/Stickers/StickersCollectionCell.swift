@@ -17,11 +17,11 @@ class StickersCollectionCell: UICollectionViewCell {
         self.imageView.prepareForReuse()
     }
     
-    func fillCell(url: URL?, image: UIImage?) {
-        if let url = url {
-            imageView.animate(withGIFURL: url)
-        } else if let image = image {
-            imageView.image = image
+    func fillCell(sticker: Sticker) {
+        if let isGif = sticker.isGif, isGif, let url = sticker.url {
+            self.imageView.animate(withGIFURL: url)
+        } else {
+            self.imageView.image = sticker.image
         }
     }
 }

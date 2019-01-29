@@ -37,5 +37,7 @@
 	</array>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Need</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>because</string>
 </dict>
 </plist>

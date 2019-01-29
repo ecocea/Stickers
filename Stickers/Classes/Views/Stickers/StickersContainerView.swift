@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 
 protocol StickersDatasource {
     var stickerImages: [Constants.StickerSource] { get }
-    func add(image: UIImage, url: URL?) -> Void
+    func add(sticker: Sticker) -> Void
 }
 
 class StickersContainerView: UIView{
@@ -23,9 +23,7 @@ class StickersContainerView: UIView{
     
     let screenHeight = UIScreen.main.bounds.height
     var datasource: StickersDatasource?
-    var images = [UIImage]()
-    var isGifArray = [Bool]()
-    var urls = [URL]()
+    var stickers = [Sticker]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,22 +60,24 @@ class StickersContainerView: UIView{
         loader.startAnimating()
         let dispatchGroup = DispatchGroup()
         datasource.stickerImages.forEach { (value) in
-            
+            let sticker = Sticker()
             dispatchGroup.enter()
             switch value {
             case .image(let image):
-                self.images.append(image)
+                sticker.image = image
+                stickers.append(sticker)
                 dispatchGroup.leave()
             case .url(let url):
                 KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { (image, error, _, _) in
                     if let img = image {
-                        self.images.append(img)
+                        sticker.image = img
                     }
-                    self.urls.append(url)
+                    sticker.url = url
                     let format = url.absoluteString.components(separatedBy: ".")
                     if let last = format.last  {
-                        self.isGifArray.append(last == "gif")
+                        sticker.isGif = (last == "gif")
                     }
+                    self.stickers.append(sticker)
                     dispatchGroup.leave()
                     
                 }
@@ -121,24 +121,20 @@ class StickersContainerView: UIView{
 extension StickersContainerView: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return stickers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "stickersCell", for: indexPath as IndexPath) as! StickersCollectionCell
         cell.imageView.prepareForReuse()
-        if self.isGifArray.count > indexPath.item, self.isGifArray[indexPath.item] {
-            cell.fillCell(url: urls[indexPath.item], image: nil)
-        } else {
-            cell.fillCell(url: nil, image: images[indexPath.item])
+        if self.stickers.count > indexPath.item {
+            cell.fillCell(sticker: stickers[indexPath.item])
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = images[indexPath.item]
-        let url = (urls.count > indexPath.item) ? urls[indexPath.item] : nil
-        datasource?.add(image: item, url: url)
+        datasource?.add(sticker: stickers[indexPath.item])
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
