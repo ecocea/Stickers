@@ -8,6 +8,8 @@
 
 import UIKit
 import Stickers
+import ImageIO
+import MobileCoreServices
 
 class ViewController: UIViewController {
 
@@ -40,14 +42,16 @@ class ViewController: UIViewController {
         ]
 
     
-    var hasGif: Bool = false
+    var timeInterval: Double = 0.0
+    var numberOfFrames = 0
+    var timer = Timer()
+    var images = [UIImage]()
     
     @IBOutlet var draggableContainerView: DraggableContainerView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         draggableContainerView.configureCollection(with: urls)
-        //draggableContainerView.configureCollectionWithImages(imgs)
         draggableContainerView.delegate = self
     }
     
@@ -56,17 +60,30 @@ class ViewController: UIViewController {
     }
     
     @IBAction func takeScreenshot(_ sender: Any) {
-        let double = draggableContainerView.calculateMinimumLoopDuration()
-//        if let double = double, double > 0.0 {
-//            // Do the screenShots
-//        }
-        print(double)
+        if let double = draggableContainerView.calculateMinimumLoopDuration() {
+            self.timeInterval = double.time
+            self.numberOfFrames = double.frame
+            print(double)
+            scheduledTimerWithTimeInterval(self.timeInterval)
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * timeInterval, execute: {
+                UIImage.animatedGif(from: self.images, timeBetweenFrames: self.timeInterval)
+                self.timer.invalidate()
+                
+            })
+        }
     }
-
-    @IBAction func changePage(_ sender: Any) {
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "GifCreator") as! GifCreator
-        self.present(vc, animated: true, completion: nil)
+    
+    func scheduledTimerWithTimeInterval(_ timerInterval: Double){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        timer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.screenshot), userInfo: nil, repeats: true)
+    }
+    
+    @objc public func screenshot() {
+        UIGraphicsBeginImageContextWithOptions(self.view.frame.size, true, 0.0)
+        self.view.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.images.append(image!)
     }
 }
 
@@ -80,3 +97,28 @@ extension ViewController: DraggableItemDelegate {
     }
 }
 
+extension UIImage {
+
+    static func animatedGif(from images: [UIImage], numberOfLoop: Int = 0, timeBetweenFrames: Double) {
+        let fileProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFLoopCount as String: 0]]  as CFDictionary
+        let frameProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [(kCGImagePropertyGIFDelayTime as String): timeBetweenFrames]] as CFDictionary
+        
+        let documentsDirectoryURL: URL? = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let fileURL: URL? = documentsDirectoryURL?.appendingPathComponent("animated.gif")
+        
+        if let url = fileURL as CFURL? {
+            if let destination = CGImageDestinationCreateWithURL(url, kUTTypeGIF, images.count, nil) {
+                CGImageDestinationSetProperties(destination, fileProperties)
+                for image in images {
+                    if let cgImage = image.cgImage {
+                        CGImageDestinationAddImage(destination, cgImage, frameProperties)
+                    }
+                }
+                if !CGImageDestinationFinalize(destination) {
+                    print("Failed to finalize the image destination")
+                }
+                print("Url = \(fileURL)")
+            }
+        }
+    }
+}
