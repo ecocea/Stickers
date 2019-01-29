@@ -13,7 +13,8 @@ open class DraggableContainerView: UIView {
     var stickerSources = [Constants.StickerSource]()
     var stickerContainer: StickersContainerView?
     var binView = UIImageView(image: UIImage(named: "binIcon", in:  Bundle(for:DraggableContainerView.self) , compatibleWith: nil))
-
+    var stickersImages = [DraggableImageView]()
+    
     open var delegate: DraggableItemDelegate?
     
     override public init(frame: CGRect) {
@@ -184,7 +185,47 @@ open class DraggableContainerView: UIView {
             imageRect = maxRect(from: imageRect)
             return imageRect
         }
-        
+    }
+    
+    public func calculateMinimumLoopDuration() -> (frame: Int, time: Double)? {
+        if !self.stickersImages.isEmpty {
+            var durationArray = [Double]()
+            var frameToFind = 0
+            var frameArray = [Int]()
+            var timeInterVal = 0.0
+            stickersImages.forEach { (image) in
+                if image.gifLoopDuration != 0.0 {
+                    let duration = Double(round(10*image.gifLoopDuration)/10)
+                    if image.frameCount > frameToFind {
+                        frameToFind = image.frameCount
+                    }
+                    durationArray.append( duration) // 2 digits precision for video length
+                    timeInterVal += (duration / Double(image.frameCount))
+                    frameArray.append(image.frameCount)
+                }
+            }
+            if !frameArray.isEmpty {
+                timeInterVal = timeInterVal / Double(frameArray.count)
+                var minFrame = 0
+                let maxDuration = frameToFind
+                while minFrame == 0 {
+                    var isFound = true
+                    for frame in frameArray {
+                        if frameToFind % frame != 0  {
+                            isFound = false
+                            frameToFind += maxDuration
+                            break
+                        }
+                    }
+                    if isFound {
+                        minFrame = frameToFind
+                    }
+                }
+                return (minFrame, timeInterVal)
+            }
+            return nil
+        }
+        return nil
     }
     
 }
@@ -209,17 +250,24 @@ extension DraggableContainerView: StickersDatasource {
         if let url = url {
             image.animate(withGIFURL: url)
         }
+        stickersImages.append(image)
     }
     
 }
 
 extension DraggableContainerView: DraggableItemDelegate {
+   
     open func isMoving() {
         binView.isHidden = false
         self.bringSubview(toFront: binView)
     }
-    open func isStopping() {
+    
+    open func isStopping(_ image: DraggableImageView?) {
         binView.isHidden = true
+        if let image = image, let index = stickersImages.index(of: image) {
+            stickersImages.remove(at: index)
+        }
+        
     }
 }
 

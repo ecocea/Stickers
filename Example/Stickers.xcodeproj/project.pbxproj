@@ -15,6 +15,17 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		EB00A2053F3FA8507FA80682 /* Pods_Stickers_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A1F8E546D310FD55107F135 /* Pods_Stickers_Tests.framework */; };
+		EFD49C9C22004D9900F924BB /* GifCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD49C9B22004D9900F924BB /* GifCreator.swift */; };
+		EFD49CAA22007DD600F924BB /* LV_Charm_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA022007DD600F924BB /* LV_Charm_320x320.gif */; };
+		EFD49CAB22007DD600F924BB /* LV_Kumquat_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA122007DD600F924BB /* LV_Kumquat_320x320.gif */; };
+		EFD49CAC22007DD600F924BB /* LV_Leaf_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA222007DD600F924BB /* LV_Leaf_320x320.gif */; };
+		EFD49CAD22007DD600F924BB /* LV_Firework_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA322007DD600F924BB /* LV_Firework_320x320.gif */; };
+		EFD49CAE22007DD600F924BB /* LV_Pig_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA422007DD600F924BB /* LV_Pig_320x320.gif */; };
+		EFD49CAF22007DD600F924BB /* LV_Flower_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA522007DD600F924BB /* LV_Flower_320x320.gif */; };
+		EFD49CB022007DD600F924BB /* LV_Lantern_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA622007DD600F924BB /* LV_Lantern_320x320.gif */; };
+		EFD49CB122007DD600F924BB /* LV_Lionhead_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA722007DD600F924BB /* LV_Lionhead_320x320.gif */; };
+		EFD49CB222007DD600F924BB /* LV_RedPocket_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA822007DD600F924BB /* LV_RedPocket_320x320.gif */; };
+		EFD49CB322007DD600F924BB /* LV_Candy_320x320.gif in Resources */ = {isa = PBXBuildFile; fileRef = EFD49CA922007DD600F924BB /* LV_Candy_320x320.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +58,17 @@
 		A4F0ECF12C4928FC2591ECD2 /* Pods-Stickers_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stickers_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stickers_Example/Pods-Stickers_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C84F8F1D707143BD14AC7964 /* Pods-Stickers_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stickers_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stickers_Tests/Pods-Stickers_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		D52236DDFA62772ADE656499 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		EFD49C9B22004D9900F924BB /* GifCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifCreator.swift; sourceTree = "<group>"; };
+		EFD49CA022007DD600F924BB /* LV_Charm_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Charm_320x320.gif; path = Images/LV_Charm_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA122007DD600F924BB /* LV_Kumquat_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Kumquat_320x320.gif; path = Images/LV_Kumquat_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA222007DD600F924BB /* LV_Leaf_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Leaf_320x320.gif; path = Images/LV_Leaf_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA322007DD600F924BB /* LV_Firework_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Firework_320x320.gif; path = Images/LV_Firework_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA422007DD600F924BB /* LV_Pig_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Pig_320x320.gif; path = Images/LV_Pig_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA522007DD600F924BB /* LV_Flower_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Flower_320x320.gif; path = Images/LV_Flower_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA622007DD600F924BB /* LV_Lantern_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Lantern_320x320.gif; path = Images/LV_Lantern_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA722007DD600F924BB /* LV_Lionhead_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Lionhead_320x320.gif; path = Images/LV_Lionhead_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA822007DD600F924BB /* LV_RedPocket_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_RedPocket_320x320.gif; path = Images/LV_RedPocket_320x320.gif; sourceTree = "<group>"; };
+		EFD49CA922007DD600F924BB /* LV_Candy_320x320.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = LV_Candy_320x320.gif; path = Images/LV_Candy_320x320.gif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,12 +115,14 @@
 		607FACD21AFB9204008FA782 /* Example for Stickers */ = {
 			isa = PBXGroup;
 			children = (
+				EFD49C9F22007DC200F924BB /* Images */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				EFD49C9B22004D9900F924BB /* GifCreator.swift */,
 			);
 			name = "Example for Stickers";
 			path = Stickers;
@@ -157,6 +181,23 @@
 				C84F8F1D707143BD14AC7964 /* Pods-Stickers_Tests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		EFD49C9F22007DC200F924BB /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				EFD49CA922007DD600F924BB /* LV_Candy_320x320.gif */,
+				EFD49CA022007DD600F924BB /* LV_Charm_320x320.gif */,
+				EFD49CA322007DD600F924BB /* LV_Firework_320x320.gif */,
+				EFD49CA522007DD600F924BB /* LV_Flower_320x320.gif */,
+				EFD49CA122007DD600F924BB /* LV_Kumquat_320x320.gif */,
+				EFD49CA622007DD600F924BB /* LV_Lantern_320x320.gif */,
+				EFD49CA222007DD600F924BB /* LV_Leaf_320x320.gif */,
+				EFD49CA722007DD600F924BB /* LV_Lionhead_320x320.gif */,
+				EFD49CA422007DD600F924BB /* LV_Pig_320x320.gif */,
+				EFD49CA822007DD600F924BB /* LV_RedPocket_320x320.gif */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,9 +292,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFD49CAE22007DD600F924BB /* LV_Pig_320x320.gif in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				EFD49CAA22007DD600F924BB /* LV_Charm_320x320.gif in Resources */,
+				EFD49CAB22007DD600F924BB /* LV_Kumquat_320x320.gif in Resources */,
+				EFD49CAC22007DD600F924BB /* LV_Leaf_320x320.gif in Resources */,
+				EFD49CAF22007DD600F924BB /* LV_Flower_320x320.gif in Resources */,
+				EFD49CB022007DD600F924BB /* LV_Lantern_320x320.gif in Resources */,
+				EFD49CB322007DD600F924BB /* LV_Candy_320x320.gif in Resources */,
+				EFD49CB122007DD600F924BB /* LV_Lionhead_320x320.gif in Resources */,
+				EFD49CAD22007DD600F924BB /* LV_Firework_320x320.gif in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+				EFD49CB222007DD600F924BB /* LV_RedPocket_320x320.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFD49C9C22004D9900F924BB /* GifCreator.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
