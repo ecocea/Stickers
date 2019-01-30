@@ -61,12 +61,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func takeScreenshot(_ sender: Any) {
-        if let double = draggableContainerView.calculateMinimumLoopDuration() {
-            self.timeInterval = double.time
-            self.numberOfFrames = double.frame
-            print(double)
+        if let gifsDescription = draggableContainerView.calculateMinimumLoopDuration() {
+            self.timeInterval = gifsDescription.time
+            self.numberOfFrames = gifsDescription.frame
+            print(gifsDescription)
             scheduledTimerWithTimeInterval(self.timeInterval)
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * timeInterval, execute: {
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * gifsDescription.maxTime, execute: {
                 let url = UIImage.animatedGif(from: self.images, timeBetweenFrames: self.timeInterval)
                 UIImage.saveGif(url: url!)
                 self.timer.invalidate()
@@ -118,8 +118,7 @@ extension UIImage {
     
     static func animatedGif(from images: [UIImage], numberOfLoop: Int = 0, timeBetweenFrames: Double) -> URL? {
         let fileProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFLoopCount as String: 0, kCGImagePropertyGIFHasGlobalColorMap as String: false]]  as CFDictionary
-        //let colorProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFHasGlobalColorMap as String: false]] as CFDictionary
-        let frameProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [(kCGImagePropertyGIFDelayTime as String): 0.04]] as CFDictionary
+        let frameProperties: CFDictionary = [kCGImagePropertyGIFDictionary as String: [(kCGImagePropertyGIFDelayTime as String): timeBetweenFrames]] as CFDictionary
         
         let documentsDirectoryURL: URL? = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         let fileURL: URL? = documentsDirectoryURL?.appendingPathComponent("animated.gif")

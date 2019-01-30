@@ -188,13 +188,13 @@ open class DraggableContainerView: UIView {
     }
     
     // max values: 50 frames and 0.1s
-    public func calculateMinimumLoopDuration() -> (frame: Int, time: Double)? {
+    public func calculateMinimumLoopDuration() -> (frame: Int, time: Double, maxTime: Double)? {
         if !self.stickersImages.isEmpty {
             var durationArray = [Double]()
             var frameToFind = 0
             var frameArray = [Int]()
             var timeInterVal = 0.0
-            
+            var maxTime = 0.0
             //Find all the Gifs and select the one with the most frames
             // timeInterval corresponds to the average of time between frames for all the gifs on the picture
             stickersImages.forEach { (image) in
@@ -203,17 +203,20 @@ open class DraggableContainerView: UIView {
                     if image.frameCount > frameToFind {
                         frameToFind = image.frameCount
                     }
+                    let timeBetweenFrames = (duration / Double(image.frameCount))
+                    if timeBetweenFrames > maxTime {
+                        maxTime = timeBetweenFrames
+                    }
                     durationArray.append( duration) // 1 digit precision for video length
-                    timeInterVal += (duration / Double(image.frameCount))
+                    timeInterVal += timeBetweenFrames
                     frameArray.append(image.frameCount)
                 }
             }
             if !frameArray.isEmpty {
                 // minFrame: number of frames min divisible by each gif frame count to constitute our new Gif image
                 timeInterVal = timeInterVal / Double(frameArray.count)
-                if timeInterVal > 0.1 {
-                    timeInterVal = 0.1
-                }
+                timeInterVal = (timeInterVal > 0.1) ? 0.1 : timeInterVal
+                maxTime = (maxTime > 0.1) ? 0.1 : maxTime
                 var hasCommonFrame = false
                 let maxDuration = frameToFind
                 while !hasCommonFrame && frameToFind <= 50 {
@@ -229,7 +232,7 @@ open class DraggableContainerView: UIView {
                 if frameToFind > 50 {
                     frameToFind = 50
                 }
-                return (frameToFind, timeInterVal)
+                return (frameToFind, timeInterVal, maxTime)
             }
             return nil
         }
