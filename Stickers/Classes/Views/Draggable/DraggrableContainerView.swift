@@ -217,26 +217,29 @@ open class DraggableContainerView: UIView {
                 timeInterVal = timeInterVal / Double(frameArray.count)
                 timeInterVal = (timeInterVal > 0.1) ? 0.1 : timeInterVal
                 maxTime = (maxTime > 0.1) ? 0.1 : maxTime
-                var hasCommonFrame = false
-                let maxDuration = frameToFind
-                while !hasCommonFrame && frameToFind <= 50 {
-                    hasCommonFrame = true
-                    for frame in frameArray {
-                        if frameToFind % frame != 0  {
-                            hasCommonFrame = false
-                            frameToFind += maxDuration
-                            break
-                        }
-                    }
-                }
-                if frameToFind > 50 {
-                    frameToFind = 50
-                }
+                frameToFind = findNumberOfFrames(frameToFind, frameArray: frameArray)
                 return (frameToFind, timeInterVal, maxTime)
             }
             return nil
         }
         return nil
+    }
+    
+    // To avoid long Gif, we set a maximum to 5 frames
+    func findNumberOfFrames(_ startFrame: Int, frameArray: [Int]) -> Int {
+        var hasCommonFrame = false
+        var frameToFind = startFrame
+        while !hasCommonFrame && frameToFind <= 50 {
+            hasCommonFrame = true
+            for frame in frameArray {
+                if frameToFind % frame != 0  {
+                    hasCommonFrame = false
+                    frameToFind += startFrame
+                    break
+                }
+            }
+        }
+        return (frameToFind > 50) ? 50 : frameToFind
     }
     
 }
