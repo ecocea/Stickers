@@ -225,7 +225,7 @@ open class DraggableContainerView: UIView {
         return nil
     }
     
-    // To avoid long Gif, we set a maximum to 5 frames
+    // To avoid long Gif, we set a maximum to 50 frames
     func findNumberOfFrames(_ startFrame: Int, frameArray: [Int]) -> Int {
         var hasCommonFrame = false
         var frameToFind = startFrame
