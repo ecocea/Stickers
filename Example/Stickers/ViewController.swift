@@ -64,13 +64,11 @@ class ViewController: UIViewController {
         if let gifsDescription = draggableContainerView.calculateMinimumLoopDuration() {
             self.timeInterval = gifsDescription.time
             self.numberOfFrames = gifsDescription.frame
-            print(gifsDescription)
             scheduledTimerWithTimeInterval(self.timeInterval)
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * gifsDescription.maxTime, execute: {
                 let url = UIImage.animatedGif(from: self.images, timeBetweenFrames: self.timeInterval)
                 UIImage.saveGif(url: url!)
                 self.timer.invalidate()
-                
             })
         } else {
             self.screenshot()
@@ -78,7 +76,6 @@ class ViewController: UIViewController {
     }
     
     func scheduledTimerWithTimeInterval(_ timerInterval: Double){
-        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
         timer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.screenshot), userInfo: nil, repeats: true)
     }
     

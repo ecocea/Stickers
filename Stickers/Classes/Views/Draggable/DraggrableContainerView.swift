@@ -203,13 +203,15 @@ open class DraggableContainerView: UIView {
                     if image.frameCount > frameToFind {
                         frameToFind = image.frameCount
                     }
-                    let timeBetweenFrames = (duration / Double(image.frameCount))
-                    if timeBetweenFrames > maxTime {
-                        maxTime = timeBetweenFrames
+                    if let timeIntervalBetweenFrames = image.animator?.frameStore?.animatedFrames[0].duration {
+                        let timeBetweenFrames = Double(timeIntervalBetweenFrames)
+                        if timeBetweenFrames > maxTime {
+                            maxTime = timeBetweenFrames
+                        }
+                        durationArray.append( duration) // 1 digit precision for video length
+                        timeInterVal += timeBetweenFrames
+                        frameArray.append(image.frameCount)
                     }
-                    durationArray.append( duration) // 1 digit precision for video length
-                    timeInterVal += timeBetweenFrames
-                    frameArray.append(image.frameCount)
                 }
             }
             if !frameArray.isEmpty {
