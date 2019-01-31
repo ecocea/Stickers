@@ -13,7 +13,8 @@ open class DraggableContainerView: UIView {
     var stickerSources = [Constants.StickerSource]()
     var stickerContainer: StickersContainerView?
     var binView = UIImageView(image: UIImage(named: "binIcon", in:  Bundle(for:DraggableContainerView.self) , compatibleWith: nil))
-
+    var stickersImages = [DraggableImageView]()
+    
     open var delegate: DraggableItemDelegate?
     
     override public init(frame: CGRect) {
@@ -184,7 +185,63 @@ open class DraggableContainerView: UIView {
             imageRect = maxRect(from: imageRect)
             return imageRect
         }
-        
+    }
+    
+    // max values: 50 frames and 0.1s
+    public func calculateMinimumLoopDuration() -> (frame: Int, time: Double, maxTime: Double)? {
+        if !self.stickersImages.isEmpty {
+            var durationArray = [Double]()
+            var frameToFind = 0
+            var frameArray = [Int]()
+            var timeInterVal = 0.0
+            var maxTime = 0.0
+            //Find all the Gifs and select the one with the most frames
+            // timeInterval corresponds to the average of time between frames for all the gifs on the picture
+            stickersImages.forEach { (image) in
+                if image.gifLoopDuration != 0.0 {
+                    let duration = Double(round(10*image.gifLoopDuration)/10)
+                    if image.frameCount > frameToFind {
+                        frameToFind = image.frameCount
+                    }
+                    if let timeIntervalBetweenFrames = image.animator?.frameStore?.animatedFrames[0].duration {
+                        let timeBetweenFrames = Double(timeIntervalBetweenFrames)
+                        if timeBetweenFrames > maxTime {
+                            maxTime = timeBetweenFrames
+                        }
+                        durationArray.append( duration) // 1 digit precision for video length
+                        timeInterVal += timeBetweenFrames
+                        frameArray.append(image.frameCount)
+                    }
+                }
+            }
+            if !frameArray.isEmpty {
+                // minFrame: number of frames min divisible by each gif frame count to constitute our new Gif image
+                timeInterVal = timeInterVal / Double(frameArray.count)
+                timeInterVal = (timeInterVal > 0.1) ? 0.1 : timeInterVal
+                maxTime = (maxTime > 0.1) ? 0.1 : maxTime
+                frameToFind = findNumberOfFrames(frameToFind, frameArray: frameArray)
+                return (frameToFind, timeInterVal, maxTime)
+            }
+            return nil
+        }
+        return nil
+    }
+    
+    // To avoid long Gif, we set a maximum to 50 frames
+    func findNumberOfFrames(_ startFrame: Int, frameArray: [Int]) -> Int {
+        var hasCommonFrame = false
+        var frameToFind = startFrame
+        while !hasCommonFrame && frameToFind <= 50 {
+            hasCommonFrame = true
+            for frame in frameArray {
+                if frameToFind % frame != 0  {
+                    hasCommonFrame = false
+                    frameToFind += startFrame
+                    break
+                }
+            }
+        }
+        return (frameToFind > 50) ? 50 : frameToFind
     }
     
 }
@@ -198,26 +255,35 @@ extension DraggableContainerView: StickersDatasource {
         }
     }
     
-    func add(image: UIImage) {
-        let image = DraggableImageView(image: image)
-        
+    func add(sticker: Sticker) {
+        let image = DraggableImageView(image: sticker.image)
         image.setup(with: self)
         image.delegate = self.delegate
         image.binZone = binView.frame
         UIView.animate(withDuration: 0.3) {
             self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
         }
+        if let url = sticker.url {
+            image.animate(withGIFURL: url)
+        }
+        stickersImages.append(image)
     }
     
 }
 
 extension DraggableContainerView: DraggableItemDelegate {
+   
     open func isMoving() {
         binView.isHidden = false
         self.bringSubview(toFront: binView)
     }
-    open func isStopping() {
+    
+    open func isStopping(_ image: DraggableImageView?) {
         binView.isHidden = true
+        if let image = image, let index = stickersImages.index(of: image) {
+            stickersImages.remove(at: index)
+        }
+        
     }
 }
 

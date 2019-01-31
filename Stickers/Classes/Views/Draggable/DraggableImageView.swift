@@ -12,10 +12,10 @@ import AVFoundation
 
 public protocol DraggableItemDelegate {
     func isMoving() -> Void
-    func isStopping() -> Void
+    func isStopping(_ image: DraggableImageView?) -> Void
 }
 
-class DraggableImageView: UIImageView {
+public class DraggableImageView: GIFImageView {
     
     var delegate: DraggableItemDelegate?
     var binZone: CGRect?
@@ -68,10 +68,11 @@ class DraggableImageView: UIImageView {
             case .ended:
                 if isInBinZone(self.center) {
                     self.removeFromSuperview()
+                    delegate?.isStopping(self)
                 }
-                delegate?.isStopping()
+                delegate?.isStopping(nil)
             default:
-                delegate?.isStopping()
+                delegate?.isStopping(nil)
             }
         }
         recognizer.setTranslation(CGPoint.zero, in: superView)
