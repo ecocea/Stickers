@@ -1,6 +1,5 @@
 //
 //  Sticker.swift
-//  Kingfisher
 //
 //  Created by Paul Binet on 29/01/2019.
 //
