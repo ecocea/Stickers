@@ -8,14 +8,19 @@
 import Foundation
 import UIKit
 
+public protocol DraggableContainerDelegate: class {
+        func displayAlert()
+}
+
 open class DraggableContainerView: UIView {
     
     var stickerSources = [Constants.StickerSource]()
     var stickerContainer: StickersContainerView?
     var binView = UIImageView(image: UIImage(named: "binIcon", in:  Bundle(for:DraggableContainerView.self) , compatibleWith: nil))
     var stickersImages = [DraggableImageView]()
-    
+    open var isFromGif: Bool = false
     open var delegate: DraggableItemDelegate?
+    open var containerDelegate: DraggableContainerDelegate?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,7 +87,7 @@ open class DraggableContainerView: UIView {
     }
     
     public func configureCollection(with stringUrls: [String]) {
-        let urls = stringUrls.flatMap { URL(string: $0) }
+        let urls = stringUrls.compactMap { URL(string: $0) }
         configureCollectionWithUrls(urls)
     }
     
@@ -256,17 +261,22 @@ extension DraggableContainerView: StickersDatasource {
     }
     
     func add(sticker: Sticker) {
-        let image = DraggableImageView(image: sticker.image)
-        image.setup(with: self)
-        image.delegate = self.delegate
-        image.binZone = binView.frame
-        UIView.animate(withDuration: 0.3) {
-            self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+        if !self.isFromGif {
+            let image = DraggableImageView(image: sticker.image)
+            image.setup(with: self)
+            image.delegate = self.delegate
+            image.binZone = binView.frame
+            UIView.animate(withDuration: 0.3) {
+                self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+            }
+            if let url = sticker.url {
+                image.animate(withGIFURL: url)
+                self.isFromGif = true
+            }
+            stickersImages.append(image)
+        } else {
+            self.containerDelegate?.displayAlert()
         }
-        if let url = sticker.url {
-            image.animate(withGIFURL: url)
-        }
-        stickersImages.append(image)
     }
     
 }
@@ -281,7 +291,11 @@ extension DraggableContainerView: DraggableItemDelegate {
     open func isStopping(_ image: DraggableImageView?) {
         binView.isHidden = true
         if let image = image, let index = stickersImages.index(of: image) {
+            if image.isAnimatingGIF {
+                self.isFromGif = false
+            }
             stickersImages.remove(at: index)
+            
         }
         
     }

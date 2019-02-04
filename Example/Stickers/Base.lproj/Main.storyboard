@@ -25,6 +25,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mzo-7l-C2j" customClass="DraggableContainerView" customModule="Stickers">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oq9-x0-T5c">
+                                        <rect key="frame" x="0.0" y="259.5" width="375" height="128"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="128" id="qc4-Gn-v6M"/>
+                                        </constraints>
+                                    </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="02w-sb-0w2">
                                         <rect key="frame" x="0.0" y="259.5" width="375" height="128"/>
                                         <color key="backgroundColor" red="0.2570515719" green="0.79595743399999996" blue="0.98548370600000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -36,8 +42,12 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="02w-sb-0w2" secondAttribute="trailing" id="Ao9-v6-p09"/>
+                                    <constraint firstItem="oq9-x0-T5c" firstAttribute="centerY" secondItem="Mzo-7l-C2j" secondAttribute="centerY" id="Gpa-gH-I1g"/>
                                     <constraint firstItem="02w-sb-0w2" firstAttribute="leading" secondItem="Mzo-7l-C2j" secondAttribute="leading" id="Usb-hG-3Ew"/>
+                                    <constraint firstAttribute="trailing" secondItem="oq9-x0-T5c" secondAttribute="trailing" id="W3R-a6-ThJ"/>
                                     <constraint firstItem="02w-sb-0w2" firstAttribute="centerY" secondItem="Mzo-7l-C2j" secondAttribute="centerY" id="WbE-b5-ZWW"/>
+                                    <constraint firstItem="oq9-x0-T5c" firstAttribute="leading" secondItem="Mzo-7l-C2j" secondAttribute="leading" id="rYZ-T6-cJh"/>
+                                    <constraint firstItem="oq9-x0-T5c" firstAttribute="centerX" secondItem="Mzo-7l-C2j" secondAttribute="centerX" id="vvU-xX-mRX"/>
                                     <constraint firstItem="02w-sb-0w2" firstAttribute="centerX" secondItem="Mzo-7l-C2j" secondAttribute="centerX" id="znD-0B-1CY"/>
                                 </constraints>
                             </view>
@@ -71,6 +81,7 @@
                     <connections>
                         <outlet property="draggableContainerView" destination="Mzo-7l-C2j" id="zFt-ut-qyE"/>
                         <outlet property="imageView" destination="02w-sb-0w2" id="7MI-ct-NR3"/>
+                        <outlet property="realImageVew" destination="oq9-x0-T5c" id="KsE-Os-dd0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
