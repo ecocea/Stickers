@@ -2,7 +2,7 @@ import ImageIO
 import UIKit
 
 /// Responsible for storing and updating the frames of a single GIF.
-class FrameStore {
+open class FrameStore {
 
   /// Total duration of one animation loop
   var loopDuration: TimeInterval = 0
@@ -20,7 +20,7 @@ class FrameStore {
   let maxTimeStep = 1.0
 
   /// An array of animated frames from a single GIF image.
-  var animatedFrames = [AnimatedFrame]()
+  open var animatedFrames = [AnimatedFrame]()
 
   /// The target size for all frames.
   let size: CGSize
@@ -136,7 +136,7 @@ class FrameStore {
   }
 }
 
-private extension FrameStore {
+extension FrameStore {
   /// Whether preloading is needed or not.
   var preloadingIsNeeded: Bool {
     return bufferFrameCount < frameCount - 1

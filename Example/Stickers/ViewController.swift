@@ -16,6 +16,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var imageView: UIView!
     
+    @IBOutlet weak var realImageVew: UIImageView!
     let urls = [
         "https://static.lexpress.fr/medias_11530/w_640,c_fill,g_north/louis-vuitton-32_5903794.jpg",
         "https://orig00.deviantart.net/6c7c/f/2009/081/2/5/louis_vuitton_finder_for_mac_by_somonette.png",
@@ -54,6 +55,7 @@ class ViewController: UIViewController {
 
         draggableContainerView.configureCollection(with: urls)
         draggableContainerView.delegate = self
+        draggableContainerView.containerDelegate = self
     }
     
     @IBAction func addSticker(_ sender: Any) {
@@ -95,6 +97,14 @@ extension ViewController: DraggableItemDelegate {
     
     func isMoving() {
         draggableContainerView.isMoving()
+    }
+}
+
+extension ViewController: DraggableContainerDelegate {
+    func displayAlert() {
+        let alert = UIAlertController(title: "Alert", message: "Not possible to add two Gifs on a picture", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
