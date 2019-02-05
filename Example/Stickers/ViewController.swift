@@ -48,12 +48,21 @@ class ViewController: UIViewController {
     var numberOfFrames = 0
     var timer = Timer()
     var images = [UIImage]()
+    var importedImages = [UIImage]()
+    var realUrls = [URL]()
     
     @IBOutlet var draggableContainerView: DraggableContainerView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        draggableContainerView.configureCollection(with: urls)
+        urls.forEach { (url) in
+            let realUrl = URL(string: url)
+            let data = try? Data(contentsOf: realUrl!)
+            let image = UIImage(data: data!)
+            importedImages.append(image!)
+            realUrls.append(realUrl!)
+            
+        }
+        draggableContainerView.configureCollectionWithImages(importedImages, urls: realUrls)
         draggableContainerView.delegate = self
         draggableContainerView.containerDelegate = self
     }
@@ -63,22 +72,54 @@ class ViewController: UIViewController {
     }
     
     @IBAction func takeScreenshot(_ sender: Any) {
-        if let gifsDescription = draggableContainerView.calculateMinimumLoopDuration() {
-            self.timeInterval = gifsDescription.time
-            self.numberOfFrames = gifsDescription.frame
-            scheduledTimerWithTimeInterval(self.timeInterval)
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * gifsDescription.maxTime, execute: {
+        self.images = self.trickyGif()
+        DispatchQueue.global(qos: .background).async {
+            if let gifsDescription = self.draggableContainerView.calculateMinimumLoopDuration() {
+                self.timeInterval = gifsDescription.time
+                //self.numberOfFrames = gifsDescription.frame
+                //scheduledTimerWithTimeInterval(self.timeInterval)
+                //            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * gifsDescription.maxTime, execute: {
                 let url = UIImage.animatedGif(from: self.images, timeBetweenFrames: self.timeInterval)
                 UIImage.saveGif(url: url!)
                 self.timer.invalidate()
-            })
-        } else {
-            self.screenshot()
+                //            })
+//            } else {
+//                self.screenshot()
+            }
         }
     }
     
     func scheduledTimerWithTimeInterval(_ timerInterval: Double){
         timer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.screenshot), userInfo: nil, repeats: true)
+    }
+    
+    func trickyGif() -> [UIImage] {
+        var gifAarray = [UIImage]()
+        var frame = CGRect()
+        var transform = CGAffineTransform()
+        var framesArray = [UIImage?]()
+        draggableContainerView.subviews.forEach({ (subview) in
+            if let gifView = subview as? DraggableImageView, gifView.isAnimatingGIF {
+                frame = gifView.frame
+                transform = gifView.transform
+                gifView.animator?.frameStore?.animatedFrames.forEach({ (frame) in
+                    framesArray.append(frame.image)
+                })
+                gifView.removeFromSuperview()
+                framesArray.forEach { (image) in
+                    let imageView = UIImageView()
+                    draggableContainerView.addSubview(imageView)
+                    imageView.frame = frame
+                    imageView.transform = transform
+                    imageView.image = image
+                    let gifImage = self.view.asImage()
+                    gifAarray.append(gifImage)
+                    imageView.removeFromSuperview()
+                }
+                draggableContainerView.addSubview(gifView)
+            }
+        })
+        return gifAarray
     }
     
     @objc public func screenshot() {
@@ -146,5 +187,17 @@ extension UIImage {
             }
         }
         return nil
+    }
+}
+
+extension UIView {
+    
+    // Using a function since `var image` might conflict with an existing variable
+    // (like on `UIImageView`)
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
     }
 }

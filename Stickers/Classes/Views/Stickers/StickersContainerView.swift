@@ -24,7 +24,8 @@ class StickersContainerView: UIView{
     let screenHeight = UIScreen.main.bounds.height
     var datasource: StickersDatasource?
     var stickers = [Sticker]()
-    
+    open var images = [UIImage?]()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -68,19 +69,17 @@ class StickersContainerView: UIView{
                 stickers.append(sticker)
                 dispatchGroup.leave()
             case .url(let url):
-                KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { (image, error, _, _) in
-                    if let img = image {
-                        sticker.image = img
-                    }
-                    sticker.url = url
-                    let format = url.absoluteString.components(separatedBy: ".")
-                    if let last = format.last  {
-                        sticker.isGif = (last == "gif")
-                    }
-                    self.stickers.append(sticker)
-                    dispatchGroup.leave()
-                    
+                if !self.images.isEmpty {
+                    let image = images.remove(at: 0)
+                    sticker.image = image
                 }
+                sticker.url = url
+                let format = url.absoluteString.components(separatedBy: ".")
+                if let last = format.last  {
+                    sticker.isGif = (last == "gif")
+                }
+                self.stickers.append(sticker)
+                dispatchGroup.leave()
             }
         }
         dispatchGroup.notify(queue: .main, execute: {

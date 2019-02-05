@@ -14,6 +14,10 @@ class StickersCollectionCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.alpha = 1
+        if self.imageView.isAnimatingGIF {
+            self.imageView.stopAnimating()
+        }
+        self.imageView.image = nil
         self.imageView.prepareForReuse()
     }
     
