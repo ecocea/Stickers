@@ -21,8 +21,8 @@ class StickersCollectionCell: UICollectionViewCell {
         self.imageView.prepareForReuse()
     }
     
-    func fillCell(sticker: Sticker) {
-        if let isGif = sticker.isGif, isGif, let url = sticker.url {
+    func fillCell(sticker: Sticker, shouldAnimate: Bool) {
+        if let isGif = sticker.isGif, isGif, let url = sticker.url, shouldAnimate {
             self.imageView.animate(withGIFURL: url)
         } else {
             self.imageView.image = sticker.image

@@ -102,6 +102,8 @@ open class DraggableContainerView: UIView {
     
     public func displayCollection() {
         guard let container = self.stickerContainer else { return }
+        container.isVisible = true
+        container.collectionView.reloadData()
         self.bringSubview(toFront: container)
         UIView.animate(withDuration: 0.3) {
             container.frame.origin.y = UIScreen.main.bounds.height - 300
@@ -142,6 +144,8 @@ open class DraggableContainerView: UIView {
             UIView.animate(withDuration: 0.3) {
                 self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
                 self.stickerContainer?.collectionHeightConstraint.constant = Constants.Section.mid.rawValue - 70
+                self.stickerContainer?.isVisible = false
+                self.stickerContainer?.collectionView.reloadData()
             }
         }
         
@@ -276,6 +280,8 @@ extension DraggableContainerView: StickersDatasource {
         image.binZone = binView.frame
         UIView.animate(withDuration: 0.3) {
             self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+            self.stickerContainer?.isVisible = false
+            self.stickerContainer?.collectionView.reloadData()
         }
         if let url = sticker.url, let isGif = sticker.isGif, isGif {
             if !self.isFromGif {

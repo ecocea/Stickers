@@ -25,7 +25,7 @@ class StickersContainerView: UIView{
     var datasource: StickersDatasource?
     var stickers = [Sticker]()
     open var images = [UIImage?]()
-
+    var isVisible: Bool = false
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -127,7 +127,7 @@ extension StickersContainerView: UICollectionViewDataSource, UICollectionViewDel
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "stickersCell", for: indexPath as IndexPath) as! StickersCollectionCell
         cell.imageView.prepareForReuse()
         if self.stickers.count > indexPath.item {
-            cell.fillCell(sticker: stickers[indexPath.item])
+            cell.fillCell(sticker: stickers[indexPath.item], shouldAnimate: isVisible)
         }
         return cell
     }
