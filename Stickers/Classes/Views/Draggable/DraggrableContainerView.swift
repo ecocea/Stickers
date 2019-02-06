@@ -177,7 +177,7 @@ open class DraggableContainerView: UIView {
         return image
     }
     
-    func calculateRectOfImage(from imageView: UIImageView) -> CGRect {
+    public func calculateRectOfImage(from imageView: UIImageView) -> CGRect {
         if imageView.contentMode == .scaleAspectFill {
             return imageView.frame
         } else {
@@ -250,25 +250,25 @@ extension DraggableContainerView: StickersDatasource {
     }
     
     func add(sticker: Sticker) {
-        let image = DraggableImageView(image: sticker.image)
-        image.setup(with: self)
-        image.delegate = self.delegate
-        image.binZone = binView.frame
-        UIView.animate(withDuration: 0.3) {
-            self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
-            self.stickerContainer?.isVisible = false
-            self.stickerContainer?.collectionView.reloadData()
-        }
-        if let url = sticker.url, let isGif = sticker.isGif, isGif {
-            if !self.isFromGif {
+        if self.isFromGif, let isGif = sticker.isGif, isGif {
+            self.containerDelegate?.displayAlert()
+        } else {
+            let image = DraggableImageView(image: sticker.image)
+            image.setup(with: self)
+            image.delegate = self.delegate
+            image.binZone = binView.frame
+            UIView.animate(withDuration: 0.3) {
+                self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+                self.stickerContainer?.isVisible = false
+                self.stickerContainer?.collectionView.reloadData()
+            }
+            if let url = sticker.url, let isGif = sticker.isGif, isGif {
                 image.animate(withGIFURL: url)
                 self.isFromGif = true
-            } else {
-                self.containerDelegate?.displayAlert()
+                stickersImages.append(image)
             }
-        stickersImages.append(image)
-       
         }
+        
     }
     
 }
