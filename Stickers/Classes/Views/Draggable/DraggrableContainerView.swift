@@ -70,6 +70,7 @@ open class DraggableContainerView: UIView {
     
     //MARK: Configure collection
     public func configureCollectionWithImages(_ images: [UIImage?], urls: [URL]?) {
+        // If there are some difficulties to DL images just with URL
         if let urls = urls {
             self.stickerSources = urls.map { Constants.StickerSource.url($0) }
             stickerContainer = StickersContainerView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
@@ -206,41 +207,16 @@ open class DraggableContainerView: UIView {
     }
     
     // max values: 50 frames and 0.1s
-    public func calculateMinimumLoopDuration() -> (frame: Int, time: Double, maxTime: Double)? {
+    public func calculateMinimumLoopDuration() -> Double? {
         if !self.stickersImages.isEmpty {
-            var durationArray = [Double]()
-            var frameToFind = 0
-            var frameArray = [Int]()
             var timeInterVal = 0.0
-            var maxTime = 0.0
-            //Find all the Gifs and select the one with the most frames
-            // timeInterval corresponds to the average of time between frames for all the gifs on the picture
             stickersImages.forEach { (image) in
-                if image.gifLoopDuration != 0.0 {
-                    let duration = Double(round(10*image.gifLoopDuration)/10)
-                    if image.frameCount > frameToFind {
-                        frameToFind = image.frameCount
-                    }
-                    if let timeIntervalBetweenFrames = image.animator?.frameStore?.animatedFrames[0].duration {
-                        let timeBetweenFrames = Double(timeIntervalBetweenFrames)
-                        if timeBetweenFrames > maxTime {
-                            maxTime = timeBetweenFrames
-                        }
-                        durationArray.append( duration) // 1 digit precision for video length
-                        timeInterVal += timeBetweenFrames
-                        frameArray.append(image.frameCount)
-                    }
+                if image.gifLoopDuration != 0.0, let timeIntervalBetweenFrames = image.animator?.frameStore?.animatedFrames[0].duration {
+                     timeInterVal = Double(timeIntervalBetweenFrames)
                 }
             }
-            if !frameArray.isEmpty {
-                // minFrame: number of frames min divisible by each gif frame count to constitute our new Gif image
-                timeInterVal = timeInterVal / Double(frameArray.count)
-                timeInterVal = (timeInterVal > 0.1) ? 0.1 : timeInterVal
-                maxTime = (maxTime > 0.1) ? 0.1 : maxTime
-                frameToFind = findNumberOfFrames(frameToFind, frameArray: frameArray)
-                return (frameToFind, timeInterVal, maxTime)
-            }
-            return nil
+            timeInterVal = (timeInterVal > 0.1) ? 0.1 : timeInterVal
+            return timeInterVal
         }
         return nil
     }

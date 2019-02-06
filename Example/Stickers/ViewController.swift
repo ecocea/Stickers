@@ -46,7 +46,6 @@ class ViewController: UIViewController {
     
     var timeInterval: Double = 0.0
     var numberOfFrames = 0
-    var timer = Timer()
     var images = [UIImage]()
     var importedImages = [UIImage]()
     var realUrls = [URL]()
@@ -75,24 +74,16 @@ class ViewController: UIViewController {
         self.images = self.trickyGif()
         DispatchQueue.global(qos: .background).async {
             if let gifsDescription = self.draggableContainerView.calculateMinimumLoopDuration() {
-                self.timeInterval = gifsDescription.time
-                //self.numberOfFrames = gifsDescription.frame
-                //scheduledTimerWithTimeInterval(self.timeInterval)
-                //            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + Double(numberOfFrames) * gifsDescription.maxTime, execute: {
+                self.timeInterval = gifsDescription
                 let url = UIImage.animatedGif(from: self.images, timeBetweenFrames: self.timeInterval)
                 UIImage.saveGif(url: url!)
-                self.timer.invalidate()
-                //            })
-//            } else {
-//                self.screenshot()
+            } else {
+                self.screenshot()
             }
         }
     }
     
-    func scheduledTimerWithTimeInterval(_ timerInterval: Double){
-        timer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.screenshot), userInfo: nil, repeats: true)
-    }
-    
+    //Create a Gif from a static background image and a Gif over it
     func trickyGif() -> [UIImage] {
         var gifAarray = [UIImage]()
         var frame = CGRect()
@@ -182,7 +173,6 @@ extension UIImage {
                 if !CGImageDestinationFinalize(destination) {
                     print("Failed to finalize the image destination")
                 }
-                print("Url = \(fileURL)")
                 return fileURL
             }
         }
@@ -192,8 +182,6 @@ extension UIImage {
 
 extension UIView {
     
-    // Using a function since `var image` might conflict with an existing variable
-    // (like on `UIImageView`)
     func asImage() -> UIImage {
         let renderer = UIGraphicsImageRenderer(bounds: bounds)
         return renderer.image { rendererContext in
