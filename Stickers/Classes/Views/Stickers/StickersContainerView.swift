@@ -104,6 +104,8 @@ class StickersContainerView: UIView{
                 self.frame.origin.y = self.screenHeight - section.rawValue
                 if section == .low {
                     self.collectionHeightConstraint.constant = Constants.Section.mid.rawValue - 70
+                    self.isVisible = false
+                    self.collectionView.reloadData()
                 } else {
                     self.collectionHeightConstraint.constant = section.rawValue - 70
                 }
