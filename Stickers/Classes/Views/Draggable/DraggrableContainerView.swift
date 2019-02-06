@@ -69,12 +69,22 @@ open class DraggableContainerView: UIView {
     }
     
     //MARK: Configure collection
-    public func configureCollectionWithImages(_ images: [UIImage]) {
-        self.stickerSources = images.map { Constants.StickerSource.image($0) }
-        stickerContainer = StickersContainerView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
-        stickerContainer?.datasource = self
-        stickerContainer?.setupCollectionData()
-        self.addSubview(stickerContainer!)
+    public func configureCollectionWithImages(_ images: [UIImage?], urls: [URL]?) {
+        // If there are some difficulties to DL images just with URL
+        if let urls = urls {
+            self.stickerSources = urls.map { Constants.StickerSource.url($0) }
+            stickerContainer = StickersContainerView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
+            stickerContainer?.datasource = self
+            stickerContainer?.images = images
+            stickerContainer?.setupCollectionData()
+            self.addSubview(stickerContainer!)
+        } else {
+            self.stickerSources = images.map { Constants.StickerSource.image($0!) }
+            stickerContainer = StickersContainerView(frame: CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
+            stickerContainer?.datasource = self
+            stickerContainer?.setupCollectionData()
+            self.addSubview(stickerContainer!)
+        }
     }
     
     public func configureCollectionWithUrls(_ urls: [URL]) {
@@ -93,6 +103,8 @@ open class DraggableContainerView: UIView {
     
     public func displayCollection() {
         guard let container = self.stickerContainer else { return }
+        container.isVisible = true
+        container.collectionView.reloadData()
         self.bringSubview(toFront: container)
         UIView.animate(withDuration: 0.3) {
             container.frame.origin.y = UIScreen.main.bounds.height - 300
@@ -133,6 +145,8 @@ open class DraggableContainerView: UIView {
             UIView.animate(withDuration: 0.3) {
                 self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
                 self.stickerContainer?.collectionHeightConstraint.constant = Constants.Section.mid.rawValue - 70
+                self.stickerContainer?.isVisible = false
+                self.stickerContainer?.collectionView.reloadData()
             }
         }
         
@@ -193,41 +207,16 @@ open class DraggableContainerView: UIView {
     }
     
     // max values: 50 frames and 0.1s
-    public func calculateMinimumLoopDuration() -> (frame: Int, time: Double, maxTime: Double)? {
+    public func calculateMinimumLoopDuration() -> Double? {
         if !self.stickersImages.isEmpty {
-            var durationArray = [Double]()
-            var frameToFind = 0
-            var frameArray = [Int]()
             var timeInterVal = 0.0
-            var maxTime = 0.0
-            //Find all the Gifs and select the one with the most frames
-            // timeInterval corresponds to the average of time between frames for all the gifs on the picture
             stickersImages.forEach { (image) in
-                if image.gifLoopDuration != 0.0 {
-                    let duration = Double(round(10*image.gifLoopDuration)/10)
-                    if image.frameCount > frameToFind {
-                        frameToFind = image.frameCount
-                    }
-                    if let timeIntervalBetweenFrames = image.animator?.frameStore?.animatedFrames[0].duration {
-                        let timeBetweenFrames = Double(timeIntervalBetweenFrames)
-                        if timeBetweenFrames > maxTime {
-                            maxTime = timeBetweenFrames
-                        }
-                        durationArray.append( duration) // 1 digit precision for video length
-                        timeInterVal += timeBetweenFrames
-                        frameArray.append(image.frameCount)
-                    }
+                if image.gifLoopDuration != 0.0, let timeIntervalBetweenFrames = image.animator?.frameStore?.animatedFrames[0].duration {
+                     timeInterVal = Double(timeIntervalBetweenFrames)
                 }
             }
-            if !frameArray.isEmpty {
-                // minFrame: number of frames min divisible by each gif frame count to constitute our new Gif image
-                timeInterVal = timeInterVal / Double(frameArray.count)
-                timeInterVal = (timeInterVal > 0.1) ? 0.1 : timeInterVal
-                maxTime = (maxTime > 0.1) ? 0.1 : maxTime
-                frameToFind = findNumberOfFrames(frameToFind, frameArray: frameArray)
-                return (frameToFind, timeInterVal, maxTime)
-            }
-            return nil
+            timeInterVal = (timeInterVal > 0.1) ? 0.1 : timeInterVal
+            return timeInterVal
         }
         return nil
     }
@@ -261,21 +250,24 @@ extension DraggableContainerView: StickersDatasource {
     }
     
     func add(sticker: Sticker) {
-        if !self.isFromGif {
-            let image = DraggableImageView(image: sticker.image)
-            image.setup(with: self)
-            image.delegate = self.delegate
-            image.binZone = binView.frame
-            UIView.animate(withDuration: 0.3) {
-                self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
-            }
-            if let url = sticker.url {
+        let image = DraggableImageView(image: sticker.image)
+        image.setup(with: self)
+        image.delegate = self.delegate
+        image.binZone = binView.frame
+        UIView.animate(withDuration: 0.3) {
+            self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+            self.stickerContainer?.isVisible = false
+            self.stickerContainer?.collectionView.reloadData()
+        }
+        if let url = sticker.url, let isGif = sticker.isGif, isGif {
+            if !self.isFromGif {
                 image.animate(withGIFURL: url)
                 self.isFromGif = true
+            } else {
+                self.containerDelegate?.displayAlert()
             }
-            stickersImages.append(image)
-        } else {
-            self.containerDelegate?.displayAlert()
+        stickersImages.append(image)
+       
         }
     }
     
