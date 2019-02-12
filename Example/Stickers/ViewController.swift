@@ -173,7 +173,7 @@ extension UIImage {
 
 extension UIView {
     
-    func asImage(rect: CGRect?) -> UIImage {
+    func asImage(rect: CGRect? = nil) -> UIImage {
         let renderer = UIGraphicsImageRenderer(bounds: rect ?? bounds)
         return renderer.image { rendererContext in
             layer.render(in: rendererContext.cgContext)
