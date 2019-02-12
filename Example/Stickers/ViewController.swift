@@ -63,7 +63,6 @@ class ViewController: UIViewController {
         }
         draggableContainerView.configureCollectionWithImages(importedImages, urls: realUrls)
         draggableContainerView.delegate = self
-        draggableContainerView.containerDelegate = self
     }
     
     @IBAction func addSticker(_ sender: Any) {
@@ -132,14 +131,6 @@ extension ViewController: DraggableItemDelegate {
     }
 }
 
-extension ViewController: DraggableContainerDelegate {
-    func displayAlert() {
-        let alert = UIAlertController(title: "Alert", message: "Not possible to add two Gifs on a picture", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-}
-
 extension UIImage {
     
     static func saveGif(url: URL) {
@@ -182,8 +173,8 @@ extension UIImage {
 
 extension UIView {
     
-    func asImage() -> UIImage {
-        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+    func asImage(rect: CGRect? = nil) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: rect ?? bounds)
         return renderer.image { rendererContext in
             layer.render(in: rendererContext.cgContext)
         }

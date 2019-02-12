@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-public protocol DraggableContainerDelegate: class {
-        func displayAlert()
-}
-
 open class DraggableContainerView: UIView {
     
     var stickerSources = [Constants.StickerSource]()
@@ -20,7 +16,6 @@ open class DraggableContainerView: UIView {
     var stickersImages = [DraggableImageView]()
     open var isFromGif: Bool = false
     open var delegate: DraggableItemDelegate?
-    open var containerDelegate: DraggableContainerDelegate?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -250,25 +245,20 @@ extension DraggableContainerView: StickersDatasource {
     }
     
     func add(sticker: Sticker) {
-        if self.isFromGif, let isGif = sticker.isGif, isGif {
-            self.containerDelegate?.displayAlert()
-        } else {
-            let image = DraggableImageView(image: sticker.image)
-            image.setup(with: self)
-            image.delegate = self.delegate
-            image.binZone = binView.frame
-            UIView.animate(withDuration: 0.3) {
-                self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
-                self.stickerContainer?.isVisible = false
-                self.stickerContainer?.collectionView.reloadData()
-            }
-            if let url = sticker.url, let isGif = sticker.isGif, isGif {
-                image.animate(withGIFURL: url)
-                self.isFromGif = true
-                stickersImages.append(image)
-            }
+        let image = DraggableImageView(image: sticker.image)
+        image.setup(with: self)
+        image.delegate = self.delegate
+        image.binZone = binView.frame
+        UIView.animate(withDuration: 0.3) {
+            self.stickerContainer?.frame.origin.y = UIScreen.main.bounds.height
+            self.stickerContainer?.isVisible = false
+            self.stickerContainer?.collectionView.reloadData()
         }
-        
+        if let url = sticker.url, let isGif = sticker.isGif, isGif {
+            image.animate(withGIFURL: url)
+            self.isFromGif = true
+            stickersImages.append(image)
+        }
     }
     
 }
