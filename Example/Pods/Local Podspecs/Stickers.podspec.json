@@ -1,6 +1,6 @@
 {
   "name": "Stickers",
-  "version": "0.1.2",
+  "version": "0.2.4",
   "summary": "Swift pod to add stickers on your images!",
   "description": "Swift pod to add stickers on your images ! Setup with urls or images.",
   "homepage": "https://github.com/ecocea/Stickers",
@@ -13,10 +13,10 @@
   },
   "source": {
     "git": "https://github.com/ecocea/Stickers.git",
-    "tag": "0.1.2"
+    "tag": "0.2.4"
   },
   "platforms": {
-    "ios": "10.0"
+    "ios": "12.1"
   },
   "source_files": "Stickers/Classes/**/*",
   "resources": "Stickers/*.{storyboard,xib,xcassets,json,imageset,png}",
@@ -27,10 +27,10 @@
   },
   "dependencies": {
     "Kingfisher": [
-      "~> 4.6.3"
+      "~> 5.2.0"
     ],
     "NVActivityIndicatorView": [
-      "~> 4.1.1"
+      "~> 4.7.0"
     ]
   }
 }

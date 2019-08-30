@@ -102,7 +102,7 @@ public class Animator {
 
   /// Add the display link to the main run loop.
   private func attachDisplayLink() {
-    displayLink.add(to: .main, forMode: RunLoopMode.commonModes)
+    displayLink.add(to: .main, forMode: RunLoop.Mode.common)
   }
 
   deinit {

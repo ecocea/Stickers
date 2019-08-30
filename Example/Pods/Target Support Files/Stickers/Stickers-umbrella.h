@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "Gifu.h"
 
 FOUNDATION_EXPORT double StickersVersionNumber;
 FOUNDATION_EXPORT const unsigned char StickersVersionString[];

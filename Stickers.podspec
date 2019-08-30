@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Stickers'
-  s.version          = '0.2.3'
+  s.version          = '0.2.4'
   s.summary          = 'Swift pod to add stickers on your images!'
 
 # This description is used to generate tags and improve search results.
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/ecocea/Stickers.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '12.1'
 
   s.source_files = 'Stickers/Classes/**/*'
   s.resources = 'Stickers/*.{storyboard,xib,xcassets,json,imageset,png}'
@@ -36,6 +36,6 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'Kingfisher', '~> 4.6.3'
-  s.dependency 'NVActivityIndicatorView', '~> 4.1.1'
+  s.dependency 'Kingfisher', '~> 5.2.0'
+  s.dependency 'NVActivityIndicatorView', '~> 4.7.0'
 end
