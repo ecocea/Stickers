@@ -51,7 +51,7 @@ public class DraggableImageView: GIFImageView {
         
         let translation = recognizer.translation(in: superView)
         if let view = recognizer.view {
-            superView.bringSubview(toFront: view)
+            superView.bringSubviewToFront(view)
             view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y + translation.y)
             
             switch recognizer.state {

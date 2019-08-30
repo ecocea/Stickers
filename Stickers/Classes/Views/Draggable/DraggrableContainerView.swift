@@ -100,7 +100,7 @@ open class DraggableContainerView: UIView {
         guard let container = self.stickerContainer else { return }
         container.isVisible = true
         container.collectionView.reloadData()
-        self.bringSubview(toFront: container)
+        self.bringSubviewToFront(container)
         UIView.animate(withDuration: 0.3) {
             container.frame.origin.y = UIScreen.main.bounds.height - 300
         }
@@ -267,7 +267,7 @@ extension DraggableContainerView: DraggableItemDelegate {
    
     open func isMoving() {
         binView.isHidden = false
-        self.bringSubview(toFront: binView)
+        self.bringSubviewToFront(binView)
     }
     
     open func isStopping(_ image: DraggableImageView?) {

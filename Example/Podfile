@@ -3,8 +3,8 @@ use_frameworks!
 target 'Stickers_Example' do
   pod 'Stickers', :path => '../'
   
-  pod 'Kingfisher', '~> 4.6.3'
-  pod 'NVActivityIndicatorView', '~> 4.1.1'
+  pod 'Kingfisher', '~> 5.2.0'
+  pod 'NVActivityIndicatorView', '~> 4.7.0'
   target 'Stickers_Tests' do
     inherit! :search_paths
 
