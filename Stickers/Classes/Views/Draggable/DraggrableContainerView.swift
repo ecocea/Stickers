@@ -12,7 +12,7 @@ open class DraggableContainerView: UIView {
     
     var stickerSources = [Constants.StickerSource]()
     var stickerContainer: StickersContainerView?
-    var binView = UIImageView(image: UIImage(named: "binIcon", in:  Bundle(for:DraggableContainerView.self) , compatibleWith: nil))
+    var binView = UIView()
     var stickersImages = [DraggableImageView]()
     open var isFromGif: Bool = false
     open var delegate: DraggableItemDelegate?
@@ -39,16 +39,28 @@ open class DraggableContainerView: UIView {
     }
     
     func setupBinView() {
-        binView.tintColor = .white
         
+        let imageView = UIImageView(image: UIImage(named: "binIcon", in:  Bundle(for:DraggableContainerView.self) , compatibleWith: nil))
+        
+        imageView.tintColor = .white
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        binView.addSubview(imageView)
+        imageView.centerXAnchor.constraint(equalTo: binView.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: binView.centerYAnchor).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
+
         binView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(binView)
         binView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         binView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -40).isActive = true
-        binView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        binView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        binView.isHidden = true
+        binView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        binView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
+        binView.layer.cornerRadius = 25
+        binView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        
+        binView.isHidden = true
     }
     
     

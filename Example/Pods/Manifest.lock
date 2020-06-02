@@ -1,26 +1,31 @@
 PODS:
-  - Kingfisher (4.6.3)
-  - NVActivityIndicatorView (4.1.1):
-    - NVActivityIndicatorView/Presenter (= 4.1.1)
-  - NVActivityIndicatorView/Presenter (4.1.1)
-  - Stickers (0.1.2):
-    - Kingfisher (~> 4.6.3)
-    - NVActivityIndicatorView (~> 4.1.1)
+  - Kingfisher (5.2.0)
+  - NVActivityIndicatorView (4.7.0):
+    - NVActivityIndicatorView/Presenter (= 4.7.0)
+  - NVActivityIndicatorView/Presenter (4.7.0)
+  - Stickers (0.2.4):
+    - Kingfisher (~> 5.2.0)
+    - NVActivityIndicatorView (~> 4.7.0)
 
 DEPENDENCIES:
-  - Kingfisher (~> 4.6.3)
-  - NVActivityIndicatorView (~> 4.1.1)
+  - Kingfisher (~> 5.2.0)
+  - NVActivityIndicatorView (~> 4.7.0)
   - Stickers (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Kingfisher
+    - NVActivityIndicatorView
 
 EXTERNAL SOURCES:
   Stickers:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Kingfisher: 98e6d5b5e807645743e8ed5ececd25d688d38452
-  NVActivityIndicatorView: 60109b9bf46efc2e71ab81453196ccdfdfeea870
-  Stickers: 901bca6e91d056b68c97939f589ac6dc93c9d3fa
+  Kingfisher: 07067cfacf371117330dceb4b4b8f5c4b691ab42
+  NVActivityIndicatorView: b19ddab2576f805cbe0fb2306cba3476e09a1dea
+  Stickers: 5b53155f9a70d0ef6dcc1366d7a4c40c519ba819
 
-PODFILE CHECKSUM: 0e1e3e682380dcf8056f72a0b06a6fac64034427
+PODFILE CHECKSUM: 2705f91cdce4fb614642d2ec3ab04c4fcb699319
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.8.4

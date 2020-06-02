@@ -16,7 +16,7 @@
     "tag": "0.2.4"
   },
   "platforms": {
-    "ios": "12.1"
+    "ios": "11"
   },
   "source_files": "Stickers/Classes/**/*",
   "resources": "Stickers/*.{storyboard,xib,xcassets,json,imageset,png}",
