@@ -12,7 +12,7 @@ open class DraggableContainerView: UIView {
     
     var stickerSources = [Constants.StickerSource]()
     var stickerContainer: StickersContainerView?
-    var binView = UIView(frame: CGRect(x: 0,y: 0,width: 40,height: 40))
+    var binView = UIView()
     var stickersImages = [DraggableImageView]()
     open var isFromGif: Bool = false
     open var delegate: DraggableItemDelegate?
