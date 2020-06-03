@@ -29,10 +29,13 @@ open class DraggableContainerView: UIView {
     
     func setup() {
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(recognizer:)))
+        pinchGesture.delegate = self
         self.addGestureRecognizer(pinchGesture)
-        
+
         let rotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(handleRotation(recognizer:)))
+        rotateGesture.delegate = self
         self.addGestureRecognizer(rotateGesture)
+
         setupBinView()
         self.delegate = self
         
@@ -247,8 +250,16 @@ open class DraggableContainerView: UIView {
     
 }
 
+//MARK: UIGestureRecognizerDelegate Methods
+extension DraggableContainerView: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
 
 
+//MARK: Data source
 extension DraggableContainerView: StickersDatasource {
     var stickerImages: [Constants.StickerSource] {
         get {
