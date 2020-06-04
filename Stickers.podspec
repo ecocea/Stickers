@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Stickers'
-  s.version          = '0.2.6'
+  s.version          = '0.2.7'
   s.summary          = 'Swift pod to add stickers on your images!'
 
 # This description is used to generate tags and improve search results.
